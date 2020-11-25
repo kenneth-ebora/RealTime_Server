@@ -10,4 +10,9 @@ namespace RealTime_Server.Models
         public string Message { get; set; }
         public string User { get; set; }
     }
+
+    public class ChatForSpecificDto : ChatData
+    {
+        public string ConnectionId { get; set; }
+    }
 }

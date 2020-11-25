@@ -11,7 +11,7 @@ using RealTime_Server.Timers;
 
 namespace RealTime_Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/chat")]
     public class ChartController : ControllerBase
     {
         public readonly IHubContext<ChartHub> _hub;
@@ -33,8 +33,18 @@ namespace RealTime_Server.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] ChatData data)
         {
-            _hub.Clients.All.SendAsync("sendmessage", data);
+            _hub.Clients.All.SendAsync("SendMessage", data);
             return Ok(data);
         }
+
+        [HttpPost]
+        [Route("SendMessageToUser")]
+        public IActionResult SendMessageToUser([FromBody] ChatForSpecificDto data)
+        {
+            _hub.Clients.Client(data.ConnectionId).SendAsync("SendMessage", data);
+            return Ok(data);
+        }
+
+        
     }
 }

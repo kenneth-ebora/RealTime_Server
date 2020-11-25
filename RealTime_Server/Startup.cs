@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DHP.Data.DataContext;
+using DHP.Data.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +28,11 @@ namespace RealTime_Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContextPool<DhpDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DhpDb"));
+            });
+
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder => builder
